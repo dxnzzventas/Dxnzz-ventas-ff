@@ -559,7 +559,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
 
 function pedir(nombre, precio){
   const precioTexto = precio > 0 ? `$${precio} MXN` : 'Precio a consultar';
-    const mensaje = `¡Hola, Dxnzz Ventas! 👋\nMe interesa comprar el paquete *${nombre}* por *${precioTexto}*.\n\n💰 Monto a pagar: *${precioTexto}*\n🎮 Mi ID de Free Fire es:\n[Escribe tu ID aquí]\n\n📸 [Adjunto mi comprobante de transferencia]`;
+    const mensaje = `Hola *Dxnzz ventas*, me interesa comprar: *${nombre}* por *${precioTexto}*. ¿Me puedes proporcionar los datos de pago?`;
   window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`, '_blank', 'noopener');
 }
 </script>
