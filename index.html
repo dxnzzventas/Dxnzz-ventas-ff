@@ -1463,7 +1463,7 @@ function calcularTotal() {
   }
 }
 
-// SISTEMA DE RESEÑAS CON RESEÑAS PREDETERMINADAS PARA TODOS
+// SISTEMA DE RESEÑAS + NOTIFICACIÓN POR WHATSAPP
 function seleccionarEstrellas(estrellas) {
   calificacionSeleccionada = estrellas;
   const spans = document.querySelectorAll('#starSelect span');
@@ -1503,27 +1503,44 @@ function cargarReseñas() {
   });
 }
 
+function notificarResenaWhatsApp(nombre, estrellas, comentario) {
+  const estrellasVisuales = "⭐".repeat(estrellas);
+  const mensaje =
+    `⭐ *NUEVA RESEÑA EN DXNZZ VENTAS*\n\n` +
+    `👤 *Nombre o ID:* ${nombre}\n` +
+    `🌟 *Calificación:* ${estrellas}/5 (${estrellasVisuales})\n` +
+    `💬 *Comentario:* "${comentario}"`;
+
+  window.open(
+    `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`,
+    '_blank',
+    'noopener'
+  );
+}
+
 function enviarReseña(event) {
   event.preventDefault();
   const nombre = document.getElementById('reviewName').value.trim();
   const comentario = document.getElementById('reviewComment').value.trim();
+  const estrellas = calificacionSeleccionada;
 
-  if(!nombre || !comentario) return;
+  if (!nombre || !comentario) return;
 
-  let nuevaReseña = {
+  const nuevaReseña = {
     nombre: nombre,
-    estrellas: calificacionSeleccionada,
+    estrellas: estrellas,
     comentario: comentario
   };
 
-  let reseñasGuardadas = JSON.parse(localStorage.getItem('dxnzz_reviews_compact_v1')) || [];
-
+  const reseñasGuardadas = JSON.parse(localStorage.getItem('dxnzz_reviews_compact_v1')) || [];
   reseñasGuardadas.unshift(nuevaReseña);
   localStorage.setItem('dxnzz_reviews_compact_v1', JSON.stringify(reseñasGuardadas));
 
   document.getElementById('reviewForm').reset();
   seleccionarEstrellas(5);
   cargarReseñas();
+
+  notificarResenaWhatsApp(nombre, estrellas, comentario);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
